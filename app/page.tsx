@@ -1,14 +1,12 @@
+
 "use client";
 
 import { useState } from "react";
 import {
   ArrowDown,
   ArrowRight,
-  Check,
   ChevronDown,
   Menu,
-  MessageCircle,
-  Send,
   Sparkles,
   Waves,
   X
@@ -55,84 +53,13 @@ const faqs = [
   {
     question: "¿Puedo resolver mis dudas antes de viajar?",
     answer:
-      "Por supuesto. Puedes utilizar el asistente de esta demo para explorar cómo sería una atención más rápida y personalizada."
+      "Sí. Puedes contactar con el equipo de AQUA Apartments Bellamar para resolver tus dudas antes de viajar."
   }
 ];
 
-type ChatMessage = {
-  role: "assistant" | "user";
-  text: string;
-};
-
-function getDemoReply(message: string) {
-  const text = message.toLowerCase();
-
-  if (
-    text.includes("disponibilidad") ||
-    text.includes("disponible") ||
-    text.includes("fecha") ||
-    text.includes("reserv")
-  ) {
-    return "¡Estaré encantado de ayudarte con tu estancia! Esta es una demostración y no tengo acceso al calendario real de reservas. Para confirmar fechas, disponibilidad y condiciones, debes contactar con el equipo de AQUA Apartments Bellamar.";
-  }
-
-  if (
-    text.includes("precio") ||
-    text.includes("cuánto") ||
-    text.includes("cuanto") ||
-    text.includes("tarifa")
-  ) {
-    return "Las tarifas pueden variar según las fechas y el alojamiento. Para evitar darte información incorrecta, te recomiendo consultar el precio directamente con el equipo de AQUA Apartments Bellamar.";
-  }
-
-  if (
-    text.includes("hola") ||
-    text.includes("buenas") ||
-    text.includes("hey")
-  ) {
-    return "¡Hola! 👋 Bienvenido a AQUA Apartments Bellamar. Soy el asistente virtual de esta demostración. ¿En qué puedo ayudarte con tu próxima escapada?";
-  }
-
-  if (
-    text.includes("ubicación") ||
-    text.includes("ubicacion") ||
-    text.includes("dirección") ||
-    text.includes("direccion") ||
-    text.includes("llegar")
-  ) {
-    return "¡Te ayudo encantado! Para darte una dirección exacta o indicaciones fiables, necesito que consultes la información oficial de AQUA Apartments Bellamar. No quiero facilitarte una ubicación que no haya podido verificar.";
-  }
-
-  return "Gracias por tu mensaje. En una integración real podría consultar la información verificada del alojamiento y ayudarte con tus dudas. Esta demo no está conectada a los sistemas internos de AQUA Apartments Bellamar. ¿Quieres consultar reservas, precios o información sobre la estancia?";
-}
-
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [chatOpen, setChatOpen] = useState(false);
-  const [question, setQuestion] = useState("");
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      role: "assistant",
-      text: "¡Hola! 👋 Bienvenido a AQUA Apartments Bellamar. Soy el asistente virtual de esta demo. ¿En qué puedo ayudarte?"
-    }
-  ]);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-
-  function sendMessage(text = question) {
-    const trimmed = text.trim();
-
-    if (!trimmed) return;
-
-    const reply = getDemoReply(trimmed);
-
-    setMessages((current) => [
-      ...current,
-      { role: "user", text: trimmed },
-      { role: "assistant", text: reply }
-    ]);
-
-    setQuestion("");
-  }
 
   function closeMenu() {
     setMenuOpen(false);
@@ -174,15 +101,13 @@ export default function Home() {
           <a href="#preguntas" onClick={closeMenu}>
             Preguntas frecuentes
           </a>
-          <button
+          <a
             className="nav-cta"
-            onClick={() => {
-              setChatOpen(true);
-              closeMenu();
-            }}
+            href="#preguntas"
+            onClick={closeMenu}
           >
-            Hablar con AQUA <ArrowRight size={16} />
-          </button>
+            Más información <ArrowRight size={16} />
+          </a>
         </nav>
       </header>
 
@@ -212,12 +137,9 @@ export default function Home() {
             <a className="button-light" href="#apartamentos">
               Descubrir AQUA <ArrowRight size={17} />
             </a>
-            <button
-              className="button-outline"
-              onClick={() => setChatOpen(true)}
-            >
-              <MessageCircle size={17} /> Habla con nuestro asistente
-            </button>
+            <a className="button-outline" href="#preguntas">
+              Resolver mis dudas <ArrowRight size={17} />
+            </a>
           </div>
 
           <a className="scroll-indicator" href="#experiencia">
@@ -226,7 +148,9 @@ export default function Home() {
           </a>
         </div>
 
-        <div className="hero-side-label">MEDITERRANEAN LIVING · AQUA</div>
+        <div className="hero-side-label">
+          MEDITERRANEAN LIVING · AQUA
+        </div>
       </section>
 
       <section className="intro section-pad" id="experiencia">
@@ -286,7 +210,9 @@ export default function Home() {
         <div className="section-heading">
           <div>
             <span className="eyebrow">DESCUBRE AQUA</span>
-            <h2>Tu próxima historia <em>empieza aquí.</em></h2>
+            <h2>
+              Tu próxima historia <em>empieza aquí.</em>
+            </h2>
           </div>
           <p>
             Inspírate, descubre nuevas experiencias y empieza a imaginar
@@ -312,12 +238,9 @@ export default function Home() {
                 <span className="eyebrow">{apartment.type}</span>
                 <h3>{apartment.name}</h3>
                 <p>{apartment.description}</p>
-                <button
-                  className="card-link"
-                  onClick={() => setChatOpen(true)}
-                >
+                <a className="card-link" href="#preguntas">
                   Más información <ArrowRight size={16} />
-                </button>
+                </a>
               </div>
             </article>
           ))}
@@ -340,12 +263,9 @@ export default function Home() {
             es <em>no tener prisa.</em>
           </h2>
           <p>Deja espacio para lo inesperado.</p>
-          <button
-            className="button-light"
-            onClick={() => setChatOpen(true)}
-          >
-            Empieza a imaginar tu viaje <ArrowRight size={17} />
-          </button>
+          <a className="button-light" href="#apartamentos">
+            Descubre AQUA <ArrowRight size={17} />
+          </a>
         </div>
       </section>
 
@@ -358,15 +278,12 @@ export default function Home() {
             <em>pregunta?</em>
           </h2>
           <p>
-            Resuelve tus dudas y descubre cómo sería una experiencia
-            de atención más cercana y sencilla.
+            Encuentra información sobre tu estancia y descubre cómo
+            disfrutar de una experiencia más sencilla.
           </p>
-          <button
-            className="text-link"
-            onClick={() => setChatOpen(true)}
-          >
-            Pregunta a nuestro asistente <ArrowRight size={17} />
-          </button>
+          <a className="text-link" href="#apartamentos">
+            Descubre nuestros espacios <ArrowRight size={17} />
+          </a>
         </div>
 
         <div className="faq-list">
@@ -382,7 +299,11 @@ export default function Home() {
                 <span>{faq.question}</span>
                 <ChevronDown
                   size={19}
-                  className={openFaq === index ? "faq-chevron rotated" : "faq-chevron"}
+                  className={
+                    openFaq === index
+                      ? "faq-chevron rotated"
+                      : "faq-chevron"
+                  }
                 />
               </button>
               {openFaq === index && (
@@ -406,12 +327,9 @@ export default function Home() {
             Descubre cómo una atención más cercana puede acompañarte
             desde la primera pregunta.
           </p>
-          <button
-            className="button-dark"
-            onClick={() => setChatOpen(true)}
-          >
-            Hablar con el asistente <ArrowRight size={17} />
-          </button>
+          <a className="button-dark" href="#preguntas">
+            Consultar información <ArrowRight size={17} />
+          </a>
         </div>
       </section>
 
@@ -430,89 +348,12 @@ export default function Home() {
           VOLVER ARRIBA ↑
         </a>
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} AQUA · DEMOSTRACIÓN</span>
+          <span>
+            © {new Date().getFullYear()} AQUA · DEMOSTRACIÓN
+          </span>
           <span>DISEÑADO PARA DISFRUTAR SIN PRISA</span>
         </div>
       </footer>
-
-      <button
-        className="chat-launcher"
-        aria-label="Abrir asistente virtual"
-        onClick={() => setChatOpen(!chatOpen)}
-      >
-        {chatOpen ? <X size={23} /> : <MessageCircle size={23} />}
-        {!chatOpen && <span className="chat-launcher-dot" />}
-      </button>
-
-      {chatOpen && (
-        <aside className="chat-panel" aria-label="Asistente virtual de demostración">
-          <div className="chat-header">
-            <div className="chat-avatar">
-              <Waves size={22} />
-            </div>
-            <div className="chat-header-text">
-              <strong>Asistente AQUA</strong>
-              <span><span className="online-dot" /> Demo interactiva</span>
-            </div>
-            <button
-              className="chat-close"
-              aria-label="Cerrar asistente"
-              onClick={() => setChatOpen(false)}
-            >
-              <X size={19} />
-            </button>
-          </div>
-
-          <div className="chat-demo-notice">
-            <Sparkles size={14} />
-            Estás probando una demostración de IA
-          </div>
-
-          <div className="chat-messages" aria-live="polite">
-            {messages.map((message, index) => (
-              <div
-                key={`${index}-${message.role}`}
-                className={`chat-message ${message.role === "user" ? "user-message" : "assistant-message"}`}
-              >
-                {message.text}
-              </div>
-            ))}
-          </div>
-
-          <div className="quick-questions">
-            <button onClick={() => sendMessage("Quiero consultar disponibilidad")}>
-              Disponibilidad
-            </button>
-            <button onClick={() => sendMessage("¿Qué precios tenéis?")}>
-              Precios
-            </button>
-            <button onClick={() => sendMessage("¿Cómo puedo reservar?")}>
-              Reservas
-            </button>
-          </div>
-
-          <form
-            className="chat-input-row"
-            onSubmit={(event) => {
-              event.preventDefault();
-              sendMessage();
-            }}
-          >
-            <input
-              aria-label="Escribe tu pregunta"
-              placeholder="Escribe tu pregunta..."
-              value={question}
-              onChange={(event) => setQuestion(event.target.value)}
-            />
-            <button type="submit" aria-label="Enviar mensaje">
-              <Send size={18} />
-            </button>
-          </form>
-          <div className="chat-footer-note">
-            <Check size={12} /> Sin conexión a reservas reales
-          </div>
-        </aside>
-      )}
     </main>
   );
 }

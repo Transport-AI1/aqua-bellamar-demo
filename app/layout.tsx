@@ -9,12 +9,28 @@ export const metadata: Metadata = {
     "Descubre AQUA Apartments Bellamar. Una experiencia mediterránea de descanso, diseño y mar.",
   robots: {
     index: false,
-    follow: false
-  }
+    follow: false,
+  },
+};
+
+type VoiceflowWindow = Window & {
+  voiceflow?: {
+    chat?: {
+      load: (config: {
+        verify: {
+          projectID: string;
+        };
+        url: string;
+        voice: {
+          url: string;
+        };
+      }) => void;
+    };
+  };
 };
 
 export default function RootLayout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -28,14 +44,16 @@ export default function RootLayout({
           strategy="afterInteractive"
           src="https://cdn.voiceflow.com/widget-next/bundle.mjs"
           onLoad={() => {
-            window.voiceflow?.chat?.load({
+            const vfWindow = window as VoiceflowWindow;
+
+            vfWindow.voiceflow?.chat?.load({
               verify: {
-                projectID: "6ae1e2332e2bb7bb800781b7"
+                projectID: "6ae1e2332e2bb7bb800781b7",
               },
               url: "https://general-runtime.voiceflow.com",
               voice: {
-                url: "https://runtime-api.voiceflow.com"
-              }
+                url: "https://runtime-api.voiceflow.com",
+              },
             });
           }}
         />

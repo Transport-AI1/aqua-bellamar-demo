@@ -1,6 +1,6 @@
 
 import type { Metadata } from "next";
-import Script from "next/script";
+import VoiceflowWidget from "./components/VoiceflowWidget";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,22 +13,6 @@ export const metadata: Metadata = {
   },
 };
 
-type VoiceflowWindow = Window & {
-  voiceflow?: {
-    chat?: {
-      load: (config: {
-        verify: {
-          projectID: string;
-        };
-        url: string;
-        voice: {
-          url: string;
-        };
-      }) => void;
-    };
-  };
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -38,25 +22,7 @@ export default function RootLayout({
     <html lang="es">
       <body>
         {children}
-
-        <Script
-          id="voiceflow-chat"
-          strategy="afterInteractive"
-          src="https://cdn.voiceflow.com/widget-next/bundle.mjs"
-          onLoad={() => {
-            const vfWindow = window as VoiceflowWindow;
-
-            vfWindow.voiceflow?.chat?.load({
-              verify: {
-                projectID: "6ae1e2332e2bb7bb800781b7",
-              },
-              url: "https://general-runtime.voiceflow.com",
-              voice: {
-                url: "https://runtime-api.voiceflow.com",
-              },
-            });
-          }}
-        />
+        <VoiceflowWidget />
       </body>
     </html>
   );
